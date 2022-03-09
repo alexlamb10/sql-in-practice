@@ -28,7 +28,10 @@ module.exports = {
     approveAppointment: (req, res) => {
         let {apptId} = req.body
     
-        sequelize.query(`*****YOUR CODE HERE*****
+        sequelize.query(`
+        UPDATE cc_appointments
+            SET approved = true
+            WHERE appt_id = ${apptId};
         
         insert into cc_emp_appts (emp_id, appt_id)
         values (${nextEmp}, ${apptId}),
@@ -62,7 +65,7 @@ module.exports = {
 
     getPastAppointments: (req, res) => {
         sequelize.query(`
-            SELECT a.appt_id, a.service_type, a.notes, u.first_name, u.last_name
+            SELECT a.appt_id, a.date, a.service_type, a.notes, u.first_name, u.last_name
             FROM cc_appointments a 
             JOIN cc_emp_appts ea ON a.appt_id = ea.appt_id
             JOIN cc_employees e ON e.emp_id = ea.emp_id

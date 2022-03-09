@@ -58,5 +58,19 @@ module.exports = {
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(err => console.log(err))
+    },
+
+    getPastAppointments: (req, res) => {
+        sequelize.query(`
+            SELECT a.appt_id, a.service_type, a.notes, u.first_name, u.last_name
+            FROM cc_appointments a 
+            JOIN cc_emp_appts ea ON a.appt_id = ea.appt_id
+            JOIN cc_employees e ON e.emp_id = ea.emp_id
+            JOIN cc_users u ON u.user_id = e.user_id
+            WHERE approved = true AND completed = true
+            ORDER BY date DESC;
+        `)
+        .then(dbRes => res.status(200).send(dbRes[0]))
+        .catch(err => console.log(err))
     }
 }

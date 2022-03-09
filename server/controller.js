@@ -75,5 +75,17 @@ module.exports = {
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(err => console.log(err))
+    },
+
+    completeAppointment: (req, res) => {
+        let {apptId} = req.body
+
+        sequelize.query(`
+            UPDATE cc_appointments
+            SET completed = true
+            WHERE appt_id = ${apptId}
+        `)
+        .then(dbRes => res.status(200).send(dbRes[0]))
+        .catch(err => console.log(err))
     }
 }
